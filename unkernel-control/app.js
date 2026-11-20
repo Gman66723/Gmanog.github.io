@@ -82,10 +82,15 @@ async function boot() {
     line("Try: uname -a   |   ls /   |   help");
     bootButton.textContent = "Running";
     bootButton.disabled = true;
-    shell.ended.then((result) => {
-      if (vm && !shuttingDown) {
-        line("\nShell ended (" + JSON.stringify(result) + ").", "system");
-        if (result.type === "exit") finishVM();
+    shell.ended.then(async (result) => {
+      if (vm && !shuttingDown && result.type === "exit") {
+        line("\nShell exited. Starting a fresh login shell…", "system");
+        try {
+          shell = await vm.spawn();
+          void readShellOutput(shell);
+        } catch (error) {
+          line("Could not reopen the shell: " + error.message, "error");
+        }
       }
     }).catch(() => {});
     vm.exited.then((result) => {
@@ -122,6 +127,10 @@ async function sendCommand(value) {
   if (!shell || !value.trim()) return;
   const command = value;
   commandInput.value = "";
+  if (/^(sudo\s+)?(poweroff|halt|reboot)(\s|$)/i.test(command.trim())) {
+    shuttingDown = true;
+    powerButton.disabled = true;
+  }
   try {
     await shell.write(command + "\n");
   } catch (error) {
