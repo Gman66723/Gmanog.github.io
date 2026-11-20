@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#10151f">
+  <meta name="description" content="A browser-based control panel for an Unkernel Linux environment.">
+  <title>Unkernel Control</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <a class="brand" href="./"><span class="brand-mark">u</span><span>unkernel<span class="muted"> / control</span></span></a>
+      <div class="top-actions">
+        <span id="status" class="status"><i></i><span>Not running</span></span>
+        <button id="boot" class="button primary">Boot Linux</button>
+      </div>
+    </header>
+
+    <section class="intro">
+      <div>
+        <p class="eyebrow">LOCAL BROWSER VM</p>
+        <h1>Your Linux environment.</h1>
+        <p class="subhead">A lightweight terminal connected directly to an Unkernel virtual machine running in this browser.</p>
+      </div>
+      <div class="runtime-card">
+        <span class="runtime-label">RUNTIME</span>
+        <strong>WebAssembly</strong>
+        <span class="runtime-note">Runs on this device</span>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <div class="panel-heading">
+        <div><span class="live-dot"></span><strong>Terminal</strong><span class="panel-hint">Interactive shell</span></div>
+        <div class="panel-actions">
+          <button id="clear" class="button subtle" disabled>Clear</button>
+          <button id="interrupt" class="button subtle" disabled>Ctrl+C</button>
+          <button id="poweroff" class="button danger" disabled>Power off</button>
+        </div>
+      </div>
+      <div id="terminal" class="terminal" role="log" aria-live="polite" aria-label="Linux terminal output">
+        <div class="welcome">
+          <div class="welcome-symbol">›_</div>
+          <strong>Unkernel is ready when you are.</strong>
+          <p>Boot the VM to start a Linux shell. Your commands run locally in this browser tab.</p>
+        </div>
+      </div>
+      <form id="command-form" class="command-row">
+        <span class="prompt">›</span>
+        <input id="command" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Boot Linux to enter a command…" disabled aria-label="Terminal command">
+        <button id="send" class="send" type="submit" disabled>Send <span>↵</span></button>
+      </form>
+    </section>
+
+    <section class="bottom-grid">
+      <article class="info-card">
+        <span class="card-icon">⌘</span>
+        <div><strong>Runs locally</strong><p>The VM executes in your browser. This page does not send terminal commands to a remote server.</p></div>
+      </article>
+      <article class="info-card">
+        <span class="card-icon">i</span>
+        <div><strong>Base shell</strong><p>This starter uses Unkernel's built-in BusyBox shell. A full Alpine or Debian image can be added later.</p></div>
+      </article>
+    </section>
+    <footer><span>Unkernel Control</span><span>Open-source Unkernel SDK · MIT-licensed SDK</span></footer>
+  </main>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
